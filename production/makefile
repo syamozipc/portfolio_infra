@@ -1,3 +1,7 @@
+.PHONY: init
+init:
+	terraform init
+
 .PHONY: fmt
 fmt:
 	terraform fmt
@@ -13,3 +17,7 @@ plan:
 .PHONY: apply
 apply:
 	terraform apply
+
+.PHONY: console
+console:
+	terraform console
