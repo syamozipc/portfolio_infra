@@ -34,8 +34,7 @@ data "aws_iam_policy_document" "s3_bucket" {
     condition {
       test     = "StringEquals"
       variable = "AWS:SourceArn"
-      # TODO::動的にする
-      values   = ["arn:aws:cloudfront::009317091415:distribution/E2VGE9EBQ3JBU5"]
+      values   = [aws_cloudfront_distribution.this.arn]
     }
     principals {
       type        = "Service"
