@@ -22,23 +22,26 @@ resource "aws_s3_bucket_website_configuration" "this" {
 
 resource "aws_s3_bucket_policy" "this" {
   bucket = aws_s3_bucket.this.id
-  policy = data.aws_iam_policy_document.s3_bucket.json
-}
 
-data "aws_iam_policy_document" "s3_bucket" {
-  version = "2012-10-17"
-  statement {
-    actions   = ["s3:GetObject"]
-    effect    = "Allow"
-    resources = ["${aws_s3_bucket.this.arn}/*"]
-    condition {
-      test     = "StringEquals"
-      variable = "AWS:SourceArn"
-      values   = [aws_cloudfront_distribution.this.arn]
+  # data属性に切り出すことも可能だが、applyの都度差分として表示されて余計なので直接埋め込む
+  policy = <<EOT
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Principal": {
+                    "Service": "cloudfront.amazonaws.com"
+                },
+                "Action": "s3:GetObject",
+                "Resource": "${aws_s3_bucket.this.arn}/*",
+                "Condition": {
+                    "StringEquals": {
+                        "AWS:SourceArn": "${aws_cloudfront_distribution.this.arn}"
+                    }
+                }
+            }
+        ]
     }
-    principals {
-      type        = "Service"
-      identifiers = ["cloudfront.amazonaws.com"]
-    }
-  }
+  EOT
 }
