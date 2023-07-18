@@ -57,8 +57,7 @@ resource "aws_cloudfront_distribution" "this" {
   }
 
   viewer_certificate {
-    # TODO:terraform管理にする（dataで読み取る？か作成する）
-    acm_certificate_arn      = var.acm_certificate_arn
+    acm_certificate_arn      = aws_acm_certificate.cloudfront.arn
     minimum_protocol_version = "TLSv1.2_2021"
     ssl_support_method       = "sni-only"
   }
