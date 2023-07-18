@@ -4,7 +4,7 @@ data "aws_cloudfront_cache_policy" "this" {
 
 resource "aws_cloudfront_distribution" "this" {
   # CNAME
-  aliases = ["web-app.syamozipc.xyz"]
+  aliases = [local.client_domain_name]
 
   # s3に存在しないファイルのパスを指定された場合にrootをリクエスト（S3側でrootアクセスにはindex.htmlを返すよう設定済み）
   custom_error_response {

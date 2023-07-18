@@ -23,3 +23,16 @@ resource "aws_route53_record" "cloudfront_acm_validation" {
   # 複数レコード登録時、レコード名が被るのでtrueにしないと重複エラーが出る
   allow_overwrite = true
 }
+
+# フロントエンドのドメイン
+resource "aws_route53_record" "client" {
+  zone_id = data.aws_route53_zone.this.zone_id
+  name    = local.client_domain_name
+  type    = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.this.domain_name
+    zone_id                = aws_cloudfront_distribution.this.hosted_zone_id
+    evaluate_target_health = false
+  }
+}
