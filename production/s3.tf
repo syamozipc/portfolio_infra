@@ -24,24 +24,22 @@ resource "aws_s3_bucket_policy" "this" {
   bucket = aws_s3_bucket.this.id
 
   # data属性に切り出すことも可能だが、applyの都度差分として表示されて余計なので直接埋め込む
-  policy = <<EOT
-    {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Principal": {
-                    "Service": "cloudfront.amazonaws.com"
-                },
-                "Action": "s3:GetObject",
-                "Resource": "${aws_s3_bucket.this.arn}/*",
-                "Condition": {
-                    "StringEquals": {
-                        "AWS:SourceArn": "${aws_cloudfront_distribution.this.arn}"
-                    }
-                }
-            }
-        ]
-    }
-  EOT
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "cloudfront.amazonaws.com"
+        },
+        "Action" : "s3:GetObject",
+        "Resource" : "${aws_s3_bucket.this.arn}/*",
+        "Condition" : {
+          "StringEquals" : {
+            "AWS:SourceArn" : "${aws_cloudfront_distribution.this.arn}"
+          }
+        }
+      }
+    ]
+  })
 }
