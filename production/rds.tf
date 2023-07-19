@@ -1,3 +1,8 @@
+resource "random_password" "db_password" {
+  length  = 16
+  special = false
+}
+
 resource "aws_db_instance" "this" {
   identifier = "${local.name}-${local.env}"
 
@@ -17,7 +22,7 @@ resource "aws_db_instance" "this" {
   vpc_security_group_ids = [aws_security_group.rds.id]
 
   username = var.db_username
-  password = var.db_password
+  password = random_password.db_password.result
   db_name  = "portfolio"
   port     = 5432
 
