@@ -32,5 +32,5 @@ resource "aws_db_instance" "this" {
 
 resource "aws_db_subnet_group" "this" {
   name       = "${local.name}-${local.env}-rds"
-  subnet_ids = local.subnet_ids
+  subnet_ids = local.private_subnet_ids
 }
