@@ -15,7 +15,7 @@ resource "aws_instance" "first" {
 
   # TODO:動的にする
   subnet_id              = local.public_subnet_ids[0]
-  vpc_security_group_ids = ["sg-09f74148688afb438"]
+  vpc_security_group_ids = [aws_security_group.ec2.id]
 
   user_data = templatefile(
     "init_ec2.sh",
@@ -40,7 +40,7 @@ resource "aws_instance" "second" {
 
   # TODO:動的にする
   subnet_id              = local.public_subnet_ids[1]
-  vpc_security_group_ids = ["sg-09f74148688afb438"]
+  vpc_security_group_ids = [aws_security_group.ec2.id]
 
   user_data = templatefile(
     "init_ec2.sh",
