@@ -1,6 +1,6 @@
 locals {
   region    = "ap-northeast-1"
-  name      = "portfolio"
+  app_name  = "portfolio"
   env       = "production"
   terraform = true
 
@@ -15,7 +15,7 @@ locals {
   private_subnet_ids = ["subnet-0c52ea815c78afeb2", "subnet-0b23ae07ff17c344f"]
 
   tags = {
-    name      = local.name
+    name      = local.app_name
     env       = local.env
     terraform = local.terraform
   }

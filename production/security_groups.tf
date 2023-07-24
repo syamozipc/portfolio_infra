@@ -1,5 +1,5 @@
 resource "aws_security_group" "rds" {
-  name = "${local.name}-${local.env}-rds-sg"
+  name = "${local.app_name}-${local.env}-rds-sg"
   # TODO:vpcをterraform化したら動的に修正
   vpc_id = local.vpc_id
 
@@ -21,7 +21,7 @@ resource "aws_security_group" "rds" {
 }
 
 resource "aws_security_group" "ec2" {
-  name = "${local.name}-${local.env}-ec2-sg"
+  name = "${local.app_name}-${local.env}-ec2-sg"
   # TODO:vpcをterraform化したら動的に修正
   vpc_id = local.vpc_id
 
@@ -48,7 +48,7 @@ resource "aws_security_group" "ec2" {
 }
 
 resource "aws_security_group" "alb" {
-  name = "${local.name}-${local.env}-alb-sg"
+  name = "${local.app_name}-${local.env}-alb-sg"
   # TODO:vpcをterraform化したら動的に修正
   vpc_id = local.vpc_id
 
