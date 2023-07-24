@@ -28,8 +28,7 @@ resource "aws_lb_listener" "https" {
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
-  # TODO:動的にする
-  certificate_arn = var.acm_certificate_arn
+  certificate_arn   = aws_acm_certificate.main.arn
 
   default_action {
     type             = "forward"
