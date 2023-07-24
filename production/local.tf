@@ -15,8 +15,8 @@ locals {
   private_subnet_ids = ["subnet-0c52ea815c78afeb2", "subnet-0b23ae07ff17c344f"]
 
   tags = {
-    name      = local.app_name
-    env       = local.env
-    terraform = local.terraform
+    Name      = local.app_name
+    Env       = local.env
+    Terraform = local.terraform
   }
 }
