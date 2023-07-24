@@ -1,6 +1,6 @@
 resource "aws_lb" "this" {
   ip_address_type = "ipv4"
-  name            = "${local.name}-${local.env}"
+  name            = "${local.app_name}-${local.env}"
   security_groups = [aws_security_group.alb.id]
   # TODO:動的にする
   subnets = [for id in local.public_subnet_ids : id]
@@ -38,7 +38,7 @@ resource "aws_lb_listener" "https" {
 }
 
 resource "aws_lb_target_group" "this" {
-  name     = "${local.name}-${local.env}"
+  name     = "${local.app_name}-${local.env}"
   port     = 8080
   protocol = "HTTP"
   vpc_id   = local.vpc_id

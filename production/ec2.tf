@@ -29,7 +29,7 @@ resource "aws_instance" "first" {
   )
 
   tags = {
-    Name = "${local.name}-${local.env}-first"
+    Name = "${local.app_name}-${local.env}-first"
   }
 }
 
@@ -54,6 +54,6 @@ resource "aws_instance" "second" {
   )
 
   tags = {
-    Name = "${local.name}-${local.env}-second"
+    Name = "${local.app_name}-${local.env}-second"
   }
 }

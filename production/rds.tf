@@ -4,7 +4,7 @@ resource "random_password" "db_password" {
 }
 
 resource "aws_db_instance" "this" {
-  identifier = "${local.name}-${local.env}"
+  identifier = "${local.app_name}-${local.env}"
 
   allocated_storage     = 20
   max_allocated_storage = 1000
@@ -31,6 +31,6 @@ resource "aws_db_instance" "this" {
 }
 
 resource "aws_db_subnet_group" "this" {
-  name       = "${local.name}-${local.env}-rds"
+  name       = "${local.app_name}-${local.env}-rds"
   subnet_ids = local.private_subnet_ids
 }

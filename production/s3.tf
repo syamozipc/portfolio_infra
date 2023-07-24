@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "this" {
-  bucket = "${local.name}-${local.env}-client"
+  bucket = "${local.app_name}-${local.env}-client"
   # doestroy時、objectが空でなくても成功させる
   force_destroy = true
 }
