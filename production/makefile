@@ -4,7 +4,7 @@ init:
 
 .PHONY: fmt
 fmt:
-	terraform fmt
+	terraform fmt -recursive
 
 .PHONY: validate
 validate:

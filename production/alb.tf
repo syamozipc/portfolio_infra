@@ -2,7 +2,7 @@ resource "aws_lb" "this" {
   ip_address_type = "ipv4"
   name            = "${local.app_name}-${local.env}"
   security_groups = [aws_security_group.alb.id]
-  subnets         = [aws_subnet.public_1a.id, aws_subnet.public_1c.id, aws_subnet.public_1d.id]
+  subnets         = module.vpc.public_subnets
 }
 
 resource "aws_lb_listener" "http" {
@@ -39,7 +39,7 @@ resource "aws_lb_target_group" "this" {
   name     = "${local.app_name}-${local.env}"
   port     = 8080
   protocol = "HTTP"
-  vpc_id   = aws_vpc.main.id
+  vpc_id   = module.vpc.vpc_id
 
   health_check {
     matcher = "200"
