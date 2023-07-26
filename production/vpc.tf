@@ -78,15 +78,14 @@ resource "aws_internet_gateway" "this" {
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.this.id
+  }
+
   tags = {
     Name = "${local.app_name}-${local.env}-public"
   }
-}
-
-resource "aws_route" "public" {
-  destination_cidr_block = "0.0.0.0/0"
-  route_table_id         = aws_route_table.public.id
-  gateway_id             = aws_internet_gateway.this.id
 }
 
 # TODO:ループする
