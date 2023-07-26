@@ -13,8 +13,7 @@ resource "aws_instance" "first" {
   instance_type               = "t2.micro"
   associate_public_ip_address = true
 
-  # TODO:動的にする
-  subnet_id              = local.public_subnet_ids[0]
+  subnet_id              = aws_subnet.public_1a.id
   vpc_security_group_ids = [aws_security_group.ec2.id]
 
   user_data = templatefile(
@@ -38,8 +37,7 @@ resource "aws_instance" "second" {
   instance_type               = "t2.micro"
   associate_public_ip_address = true
 
-  # TODO:動的にする
-  subnet_id              = local.public_subnet_ids[1]
+  subnet_id              = aws_subnet.public_1c.id
   vpc_security_group_ids = [aws_security_group.ec2.id]
 
   user_data = templatefile(

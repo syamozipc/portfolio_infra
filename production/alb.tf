@@ -2,8 +2,7 @@ resource "aws_lb" "this" {
   ip_address_type = "ipv4"
   name            = "${local.app_name}-${local.env}"
   security_groups = [aws_security_group.alb.id]
-  # TODO:動的にする
-  subnets = [for id in local.public_subnet_ids : id]
+  subnets         = [aws_subnet.public_1a.id, aws_subnet.public_1c.id, aws_subnet.public_1d.id]
 }
 
 resource "aws_lb_listener" "http" {
@@ -40,7 +39,7 @@ resource "aws_lb_target_group" "this" {
   name     = "${local.app_name}-${local.env}"
   port     = 8080
   protocol = "HTTP"
-  vpc_id   = local.vpc_id
+  vpc_id   = aws_vpc.main.id
 
   health_check {
     matcher = "200"
