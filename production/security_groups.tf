@@ -1,7 +1,6 @@
 resource "aws_security_group" "rds" {
-  name = "${local.app_name}-${local.env}-rds-sg"
-  # TODO:vpcをterraform化したら動的に修正
-  vpc_id = local.vpc_id
+  name   = "${local.app_name}-${local.env}-rds-sg"
+  vpc_id = aws_vpc.main.id
 
   # EC2からの通信のみ
   ingress {
@@ -21,9 +20,8 @@ resource "aws_security_group" "rds" {
 }
 
 resource "aws_security_group" "ec2" {
-  name = "${local.app_name}-${local.env}-ec2-sg"
-  # TODO:vpcをterraform化したら動的に修正
-  vpc_id = local.vpc_id
+  name   = "${local.app_name}-${local.env}-ec2-sg"
+  vpc_id = aws_vpc.main.id
 
   ingress {
     from_port       = 8080
@@ -48,9 +46,8 @@ resource "aws_security_group" "ec2" {
 }
 
 resource "aws_security_group" "alb" {
-  name = "${local.app_name}-${local.env}-alb-sg"
-  # TODO:vpcをterraform化したら動的に修正
-  vpc_id = local.vpc_id
+  name   = "${local.app_name}-${local.env}-alb-sg"
+  vpc_id = aws_vpc.main.id
 
   ingress {
     from_port   = 80

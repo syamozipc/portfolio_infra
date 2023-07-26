@@ -32,8 +32,8 @@ resource "aws_s3_bucket_policy" "this" {
         "Principal" : {
           "Service" : "cloudfront.amazonaws.com"
         },
-        "Action" : "s3:GetObject",
-        "Resource" : "${aws_s3_bucket.this.arn}/*",
+        "Action" : ["s3:GetObject", "s3:ListBucket"],
+        "Resource" : [aws_s3_bucket.this.arn, "${aws_s3_bucket.this.arn}/*"],
         "Condition" : {
           "StringEquals" : {
             "AWS:SourceArn" : "${aws_cloudfront_distribution.this.arn}"
