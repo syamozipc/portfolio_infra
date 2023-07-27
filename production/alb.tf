@@ -6,7 +6,7 @@ resource "aws_lb" "this" {
 }
 
 resource "aws_lb_listener" "http" {
-  load_balancer_arn = aws_lb.this.arn
+  load_balancer_arn =     aws_lb.this.arn
 port              = "80"
       protocol          = "HTTP"
 
