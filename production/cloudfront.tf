@@ -28,19 +28,15 @@ resource "aws_cloudfront_distribution" "this" {
     viewer_protocol_policy = "redirect-to-https"
   }
 
+  default_root_object = "index.html"
+
   # エンドユーザーからのリクエストを受けるかどうか
   enabled = true
 
   origin {
-    custom_origin_config {
-      http_port              = 80
-      https_port             = 443
-      origin_protocol_policy = "http-only"
-      origin_ssl_protocols   = ["TLSv1.2"]
-    }
-
-    domain_name = aws_s3_bucket_website_configuration.this.website_endpoint
-    origin_id   = aws_s3_bucket.this.id
+    domain_name              = aws_s3_bucket.this.bucket_domain_name
+    origin_access_control_id = aws_cloudfront_origin_access_control.this.id
+    origin_id                = aws_s3_bucket.this.id
 
     origin_shield {
       enabled              = true
@@ -61,4 +57,11 @@ resource "aws_cloudfront_distribution" "this" {
     minimum_protocol_version = "TLSv1.2_2021"
     ssl_support_method       = "sni-only"
   }
+}
+
+resource "aws_cloudfront_origin_access_control" "this" {
+  name                              = aws_s3_bucket.this.bucket_domain_name
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
 }
