@@ -3,24 +3,36 @@
 # パッケージインストール
 yum update
 yum install postgresql15.x86_64 -y
-yum install git -y
-yum install make -y
 
-# goインストール
-wget https://golang.org/dl/go1.19.11.linux-amd64.tar.gz
-tar -C /usr/local -xzf go1.19.11.linux-amd64.tar.gz
+# serviceに登録
+cat << EOF > /etc/systemd/system/${app_name}.service
+[Unit]
+Description=TODO application written by go
+After=network.target
 
-# pathを通す + 環境変数を設定
-cd /home/ec2-user
-echo 'export PATH=$PATH:/usr/local/go/bin' >> .bash_profile
-echo 'export DB_HOST=${db_host}' >> .bash_profile
-echo 'export DB_PORT=${db_port}' >> .bash_profile
-echo 'export DB_NAME=${db_name}' >> .bash_profile
-echo 'export DB_USER=${db_user}' >> .bash_profile
-echo 'export DB_PASSWORD=${db_password}' >> .bash_profile
-source .bash_profile
+[Service]
+Type=simple
+WorkingDirectory=${work_dir}
+ExecStart=/bin/bash -c '${work_dir}/main migrate; ${work_dir}/main serve'
+Restart = always
+Environment=DB_HOST=${db_host}
+Environment=DB_PORT=${db_port}
+Environment=DB_NAME=${db_name}
+Environment=DB_USER=${db_user}
+Environment=DB_PASSWORD=${db_password}
 
-# アプリケーション準備
-git clone https://github.com/syamozipc/portfolio_server.git
-cd portfolio_server
-go mod download
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# 設定を読み込み
+sudo systemctl daemon-reload
+#
+sudo systemctl enable ${app_name}.service
+
+if [ -e ${work_dir}/main ]; then
+  echo service start!
+  sudo systemctl start ${app_name}.service
+fi
+
+echo setup done!

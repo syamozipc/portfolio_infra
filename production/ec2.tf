@@ -13,12 +13,17 @@ resource "aws_instance" "first" {
   instance_type               = "t2.micro"
   associate_public_ip_address = true
 
+  # TODO:なぜかterraformで作ったものでは入れない
+  key_name = local.app_name
+
   subnet_id              = module.vpc.public_subnets[0]
   vpc_security_group_ids = [aws_security_group.ec2.id]
 
   user_data = templatefile(
     "init_ec2.sh",
     {
+      work_dir    = "/root"
+      app_name    = local.app_name
       db_host     = aws_db_instance.this.address
       db_port     = aws_db_instance.this.port
       db_name     = aws_db_instance.this.db_name
@@ -37,12 +42,17 @@ resource "aws_instance" "second" {
   instance_type               = "t2.micro"
   associate_public_ip_address = true
 
+  # TODO:なぜかterraformで作ったものでは入れない
+  key_name = local.app_name
+
   subnet_id              = module.vpc.public_subnets[1]
   vpc_security_group_ids = [aws_security_group.ec2.id]
 
   user_data = templatefile(
     "init_ec2.sh",
     {
+      work_dir    = "/root"
+      app_name    = local.app_name
       db_host     = aws_db_instance.this.address
       db_port     = aws_db_instance.this.port
       db_name     = aws_db_instance.this.db_name
