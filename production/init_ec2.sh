@@ -14,7 +14,7 @@ After=network.target
 Type=simple
 WorkingDirectory=${work_dir}
 ExecStart=/bin/bash -c '${work_dir}/main migrate; ${work_dir}/main serve'
-Restart = always
+Restart=always
 Environment=DB_HOST=${db_host}
 Environment=DB_PORT=${db_port}
 Environment=DB_NAME=${db_name}
