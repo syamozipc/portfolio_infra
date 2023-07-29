@@ -12,12 +12,9 @@ resource "aws_instance" "first" {
   ami                         = data.aws_ami.this.id
   instance_type               = "t2.micro"
   associate_public_ip_address = true
-
-  # TODO:なぜかterraformで作ったものでは入れない
-  key_name = local.app_name
-
-  subnet_id              = module.vpc.public_subnets[0]
-  vpc_security_group_ids = [aws_security_group.ec2.id]
+  subnet_id                   = module.vpc.public_subnets[0]
+  vpc_security_group_ids      = [aws_security_group.ec2.id]
+  key_name                    = aws_key_pair.this.key_name
 
   user_data = templatefile(
     "init_ec2.sh",
@@ -41,12 +38,10 @@ resource "aws_instance" "second" {
   ami                         = data.aws_ami.this.id
   instance_type               = "t2.micro"
   associate_public_ip_address = true
+  subnet_id                   = module.vpc.public_subnets[1]
+  vpc_security_group_ids      = [aws_security_group.ec2.id]
+  key_name                    = aws_key_pair.this.key_name
 
-  # TODO:なぜかterraformで作ったものでは入れない
-  key_name = local.app_name
-
-  subnet_id              = module.vpc.public_subnets[1]
-  vpc_security_group_ids = [aws_security_group.ec2.id]
 
   user_data = templatefile(
     "init_ec2.sh",
@@ -64,4 +59,9 @@ resource "aws_instance" "second" {
   tags = {
     Name = "${local.app_name}-${local.env}-second"
   }
+}
+
+resource "aws_key_pair" "this" {
+  key_name   = local.app_name
+  public_key = file("key_pair/id_rsa.pub")
 }
