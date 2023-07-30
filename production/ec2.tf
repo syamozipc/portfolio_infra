@@ -19,7 +19,7 @@ resource "aws_instance" "first" {
   user_data = templatefile(
     "init_ec2.sh",
     {
-      work_dir    = "/root"
+      work_dir    = "/home/ec2-user"
       app_name    = local.app_name
       db_host     = aws_db_instance.this.address
       db_port     = aws_db_instance.this.port
@@ -46,7 +46,7 @@ resource "aws_instance" "second" {
   user_data = templatefile(
     "init_ec2.sh",
     {
-      work_dir    = "/root"
+      work_dir    = "/home/ec2-user"
       app_name    = local.app_name
       db_host     = aws_db_instance.this.address
       db_port     = aws_db_instance.this.port
