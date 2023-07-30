@@ -27,12 +27,10 @@ EOF
 
 # 設定を読み込み
 sudo systemctl daemon-reload
-#
+# インスタンス起動時に自動で有効化する
 sudo systemctl enable ${app_name}.service
 
+# 既にバイナリファイルが置かれている場合は実行（GitHub Actionsでビルド & アップロードする想定）
 if [ -e ${work_dir}/main ]; then
-  echo service start!
   sudo systemctl start ${app_name}.service
 fi
-
-echo setup done!
