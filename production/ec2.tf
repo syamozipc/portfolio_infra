@@ -14,7 +14,7 @@ resource "aws_instance" "first" {
   associate_public_ip_address = true
   subnet_id                   = module.vpc.public_subnets[0]
   vpc_security_group_ids      = [aws_security_group.ec2.id]
-  key_name                    = aws_key_pair.this.key_name
+  key_name                    = aws_key_pair.ec2_first.key_name
 
   user_data = templatefile(
     "init_ec2.sh",
@@ -40,7 +40,7 @@ resource "aws_instance" "second" {
   associate_public_ip_address = true
   subnet_id                   = module.vpc.public_subnets[1]
   vpc_security_group_ids      = [aws_security_group.ec2.id]
-  key_name                    = aws_key_pair.this.key_name
+  key_name                    = aws_key_pair.ec2_second.key_name
 
 
   user_data = templatefile(
@@ -61,7 +61,22 @@ resource "aws_instance" "second" {
   }
 }
 
-resource "aws_key_pair" "this" {
-  key_name   = local.app_name
-  public_key = file("key_pair/id_rsa.pub")
+resource "aws_key_pair" "ec2_first" {
+  key_name   = "${local.app_name}-ec2-first"
+  public_key = file("key_pair/ec2_first.pub")
+}
+
+resource "aws_key_pair" "ec2_second" {
+  key_name   = "${local.app_name}-ec2-secont"
+  public_key = file("key_pair/ec2_second.pub")
+}
+
+resource "aws_eip" "ec2_first" {
+  domain   = "vpc"
+  instance = aws_instance.first.id
+}
+
+resource "aws_eip" "ec2_second" {
+  domain   = "vpc"
+  instance = aws_instance.second.id
 }
